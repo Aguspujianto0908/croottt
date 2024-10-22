@@ -30,9 +30,12 @@
             border: 1px solid #000;
         }
     </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 </head>
 <body>
     <button id="generate-button">Generate Struk</button>
+    <button id="download-button" style="display:none;">Download Struk</button>
     
     <h1>Struk Pembayaran</h1>
     <div class="receipt-container" id="receipt">
@@ -65,32 +68,7 @@
             { name: "Teh Botol", price: 5000 },
             { name: "Coklat", price: 20000 },
             { name: "Sabun", price: 15000 },
-            { name: "Sikat Gigi", price: 10000 },
-            { name: "Detergen", price: 12000 },
-            { name: "Pasta Gigi", price: 20000 },
-            { name: "Makanan Ringan", price: 8000 },
-            { name: "Keripik", price: 10000 },
-            { name: "Saus Sambal", price: 7500 },
-            { name: "Sereal", price: 25000 },
-            { name: "Minuman Energi", price: 12000 },
-            { name: "Kecap Manis", price: 7000 },
-            { name: "Kardus Pembungkus", price: 3000 },
-            { name: "Susu Kental Manis", price: 12000 },
-            { name: "Cereal Bar", price: 15000 },
-            { name: "Air Mineral", price: 5000 },
-            { name: "Buah Jeruk", price: 10000 },
-            { name: "Bawang Merah", price: 8000 },
-            { name: "Bawang Putih", price: 8000 },
-            { name: "Cabai Merah", price: 15000 },
-            { name: "Sayur Bayam", price: 7000 },
-            { name: "Sayur Sawi", price: 7000 },
-            { name: "Tomat", price: 9000 },
-            { name: "Kentang", price: 12000 },
-            { name: "Beras", price: 12000 },
-            { name: "Garam", price: 3000 },
-            { name: "Kopi Instan", price: 15000 },
-            { name: "Coklat Batang", price: 12000 },
-            { name: "Sosis", price: 20000 }
+            { name: "Sikat Gigi", price: 10000 }
         ];
 
         const streets = [
@@ -98,54 +76,19 @@
             "Jl. Pahlawan No. ", 
             "Jl. Jend. Sudirman No. ", 
             "Jl. Gatot Subroto No. ", 
-            "Jl. Soekarno-Hatta No. ",
-            "Jl. Cendrawasih No. ",
-            "Jl. Mawar No. ",
-            "Jl. Melati No. ",
-            "Jl. Anggrek No. ",
-            "Jl. Kenanga No. "
+            "Jl. Soekarno-Hatta No. "
         ];
 
         const stores = [
             "CV. Toko Maju", 
             "CV. Sumber Berkah", 
-            "CV. Usaha Bersama", 
-            "CV. Sejahtera", 
-            "CV. Mitra Abadi",
-            "CV. Andalan", 
-            "CV. Cemerlang", 
-            "CV. Mandiri", 
-            "CV. Abadi", 
-            "CV. Mega Jaya",
-            "CV. Harapan Kita",
-            "CV. Bintang Lima",
-            "CV. Sinergi",
-            "CV. Makmur",
-            "CV. Citra",
-            "CV. Dinamika",
-            "CV. Berkat",
-            "CV. Tunas",
-            "CV. Karya",
-            "CV. Inspirasi"
+            "CV. Usaha Bersama"
         ];
 
         const cashiers = [
             "Budi", 
             "Ani", 
-            "Joko", 
-            "Siti", 
-            "Dewi",
-            "Rudi",
-            "Tina",
-            "Yanto",
-            "Wati",
-            "Eko",
-            "Rina",
-            "Sandi",
-            "Diana",
-            "Fauzan",
-            "Ika",
-            "Nina"
+            "Joko"
         ];
 
         const getRandomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
@@ -171,10 +114,11 @@
             document.getElementById('store-phone').innerText = storePhone;
             document.getElementById('cashier-name').innerText = cashierName;
 
-            document.getElementById('transaction-number').innerText = generateRandomTransactionNumber();
+            const transactionNumber = generateRandomTransactionNumber();
+            document.getElementById('transaction-number').innerText = transactionNumber;
             document.getElementById('transaction-date').innerText = new Date().toLocaleString();
 
-            const itemCount = getRandomInt(5, 8); // Generate between 5 to 8 items
+            const itemCount = getRandomInt(3, 6); // Generate between 3 to 6 items
             const itemsTable = document.getElementById('items-table');
 
             // Clear previous rows except for header
@@ -185,25 +129,61 @@
             let subtotal = 0;
             for (let i = 0; i < itemCount; i++) {
                 const item = items[getRandomInt(0, items.length - 1)];
-                const quantity = getRandomInt(1, 5); // Random quantity between 1 and 5
+                const quantity = getRandomInt(1, 5);
                 const total = item.price * quantity;
+
                 subtotal += total;
 
-                const row = itemsTable.insertRow(-1);
-                row.innerHTML = `<td>${item.name}</td><td>${quantity}</td><td>Rp ${item.price.toLocaleString()}</td><td>Rp ${total.toLocaleString()}</td>`;
+                const row = itemsTable.insertRow();
+                row.insertCell(0).innerText = item.name;
+                row.insertCell(1).innerText = quantity;
+                row.insertCell(2).innerText = `Rp ${item.price.toLocaleString()}`;
+                row.insertCell(3).innerText = `Rp ${total.toLocaleString()}`;
             }
 
-            // Menampilkan subtotal
-            const subtotalRow = itemsTable.insertRow(-1);
-            subtotalRow.innerHTML = `<td colspan="2"></td><td>Subtotal</td><td>Rp ${subtotal.toLocaleString()}</td>`;
+            // Hitung total tunai dan kembalian
+            const totalTunai = subtotal + 10000; // Asumsikan pengguna memberikan Rp 10.000 lebih
+            const kembalian = totalTunai - subtotal;
 
-            // Tampilkan struk
-            document.getElementById('receipt').style.display = 'block';
+            // Tambahkan baris untuk subtotal
+            const rowSubtotal = itemsTable.insertRow();
+            rowSubtotal.insertCell(0).innerText = ""; // Kosongkan sel pertama
+            rowSubtotal.insertCell(1).innerText = ""; // Kosongkan sel kedua
+            rowSubtotal.insertCell(2).innerText = "Subtotal";
+            rowSubtotal.insertCell(3).innerText = `Rp ${subtotal.toLocaleString()}`;
+
+            // Tambahkan baris untuk tunai
+            const cashRow = itemsTable.insertRow();
+            cashRow.insertCell(0).innerText = ""; // Kosongkan sel pertama
+            cashRow.insertCell(1).innerText = ""; // Kosongkan sel kedua
+            cashRow.insertCell(2).innerText = "Tunai";
+            cashRow.insertCell(3).innerText = `Rp ${totalTunai.toLocaleString()}`;
+
+            // Tambahkan baris untuk kembalian
+            const changeRow = itemsTable.insertRow();
+            changeRow.insertCell(0).innerText = ""; // Kosongkan sel pertama
+            changeRow.insertCell(1).innerText = ""; // Kosongkan sel kedua
+            changeRow.insertCell(2).innerText = "Kembalian";
+            changeRow.insertCell(3).innerText = `Rp ${kembalian.toLocaleString()}`;
+
+            // Tampilkan struk dan tombol download
+            document.querySelector('.receipt-container').style.display = 'block';
+            document.getElementById('download-button').style.display = 'inline';
         };
 
-        document.getElementById('generate-button').addEventListener('click', function() {
-            generateRandomData();
-        });
+        document.getElementById('generate-button').onclick = generateRandomData;
+
+        document.getElementById('download-button').onclick = () => {
+            const receipt = document.getElementById('receipt');
+            const storeName = document.getElementById('store-name').innerText;
+            const transactionNumber = document.getElementById('transaction-number').innerText;
+            const fileName = `${storeName.replace(/\s+/g, '_')}_${transactionNumber}.png`; // Format: "CV_Toko_Maju_20241023124530.png"
+            html2canvas(receipt).then(canvas => {
+                canvas.toBlob(function(blob) {
+                    saveAs(blob, fileName);
+                });
+            }).catch(err => console.error(err));
+        };
     </script>
 </body>
 </html>
