@@ -3,82 +3,141 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Struk Pembayaran Alfamart</title>
+    <title>Struk Pembayaran</title>
     <style>
         body {
-            font-family: 'Courier New', Courier, monospace;
-            width: 300px;
-            margin: 0 auto;
-            padding: 10px;
+            font-family: monospace;
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            text-align: center;
+        }
+        .receipt-container {
             border: 1px solid #000;
-            background-color: #fff;
-        }
-        h2, h4 {
-            text-align: center;
-            margin: 0;
-        }
-        .item {
-            display: flex;
-            justify-content: space-between;
-            margin: 5px 0;
-        }
-        .total {
-            font-weight: bold;
-            font-size: 16px;
-            margin-top: 10px;
-        }
-        .footer {
-            text-align: center;
-            font-size: 12px;
+            border-radius: 5px;
+            padding: 10px;
             margin-top: 20px;
+            display: none; /* Awalnya disembunyikan */
+        }
+        table {
+            width: 100%;
+            margin: 10px 0;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border: 1px solid #000;
         }
     </style>
 </head>
 <body>
-
-    <h2>ALFAMART</h2>
-    <h4>Jl. Contoh No.123</h4>
-    <h4>Telp: (021) 12345678</h4>
-    <hr>
-    <div id="struk">
-        <div class="item"><span>Loading...</span><span>Rp 0</span></div>
-    </div>
+    <button id="generate-button">Generate Struk</button>
     
-    <button onclick="generateRandomStruk()">Generate Struk</button>
+    <h1>Struk Pembayaran</h1>
+    <div class="receipt-container" id="receipt">
+        <p id="store-name"></p>
+        <p id="store-address"></p>
+        <p id="store-phone"></p>
+        <p>Nomor Transaksi: <span id="transaction-number"></span></p>
+        <p>Tanggal: <span id="transaction-date"></span></p>
+        <p>Kasir: <span id="cashier-name"></span></p>
+        <table id="items-table">
+            <tr>
+                <th>Item</th>
+                <th>Jumlah</th>
+                <th>Harga Satuan</th>
+                <th>Total</th>
+            </tr>
+        </table>
+        <p>Metode Pembayaran: Tunai</p>
+        <p>Terima kasih telah berbelanja!</p>
+    </div>
 
     <script>
-        function generateRandomStruk() {
-            const items = [
-                { name: 'Susu Ultra', price: Math.floor(Math.random() * 20000) + 5000 },
-                { name: 'Mie Instan', price: Math.floor(Math.random() * 15000) + 2000 },
-                { name: 'Biskuit', price: Math.floor(Math.random() * 10000) + 3000 },
-                { name: 'Sabun Mandi', price: Math.floor(Math.random() * 15000) + 4000 },
-                { name: 'Detergent', price: Math.floor(Math.random() * 25000) + 10000 }
-            ];
+        const items = [
+            { name: "Indomie Goreng", price: 2500 },
+            { name: "Minyak Goreng", price: 22000 },
+            { name: "Susu UHT", price: 10000 },
+            { name: "Mie Instan", price: 3000 },
+            { name: "Biskuit", price: 15000 }
+        ];
 
-            const strukDiv = document.getElementById('struk');
-            strukDiv.innerHTML = ''; // Reset struk
+        const streets = [
+            "Jl. Merdeka No. ", 
+            "Jl. Pahlawan No. ", 
+            "Jl. Jend. Sudirman No. ", 
+            "Jl. Gatot Subroto No. ", 
+            "Jl. Soekarno-Hatta No. "
+        ];
 
-            let total = 0;
-            items.forEach(item => {
-                const itemDiv = document.createElement('div');
-                itemDiv.className = 'item';
-                itemDiv.innerHTML = `<span>${item.name}</span><span>Rp ${item.price}</span>`;
-                strukDiv.appendChild(itemDiv);
-                total += item.price;
-            });
+        const stores = [
+            { 
+                name: "Indomaret", 
+                address: "",  // Ini akan diisi nanti
+                phone: "",    // Ini akan diisi nanti
+                cashiers: ["Budi", "Ani", "Joko", "Siti", "Dewi"] 
+            }
+        ];
 
-            const totalDiv = document.createElement('div');
-            totalDiv.className = 'total';
-            totalDiv.innerHTML = `Total: Rp <span>${total}</span>`;
-            strukDiv.appendChild(totalDiv);
+        const getRandomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 
-            const footerDiv = document.createElement('div');
-            footerDiv.className = 'footer';
-            footerDiv.innerHTML = 'Terima kasih telah berbelanja!';
-            strukDiv.appendChild(footerDiv);
-        }
+        const generateRandomTransactionNumber = () => {
+            const date = new Date();
+            return date.getFullYear().toString() + 
+                   (date.getMonth() + 1).toString().padStart(2, '0') + 
+                   date.getDate().toString().padStart(2, '0') + 
+                   date.getHours().toString().padStart(2, '0') + 
+                   date.getMinutes().toString().padStart(2, '0') + 
+                   date.getSeconds().toString().padStart(2, '0');
+        };
+
+        const generateRandomData = () => {
+            const store = stores[0];
+            store.address = streets[getRandomInt(0, streets.length - 1)] + getRandomInt(100, 999);
+            store.phone = "021-" + getRandomInt(100, 999) + "-" + getRandomInt(1000, 9999);
+
+            document.getElementById('store-name').innerText = store.name;
+            document.getElementById('store-address').innerText = store.address;
+            document.getElementById('store-phone').innerText = store.phone;
+            document.getElementById('cashier-name').innerText = store.cashiers[getRandomInt(0, store.cashiers.length - 1)];
+
+            document.getElementById('transaction-number').innerText = generateRandomTransactionNumber();
+            document.getElementById('transaction-date').innerText = new Date().toLocaleString();
+
+            const itemCount = getRandomInt(3, 5); // Generate between 3 to 5 items
+            const itemsTable = document.getElementById('items-table');
+
+            // Clear previous rows except for header
+            while (itemsTable.rows.length > 1) {
+                itemsTable.deleteRow(1);
+            }
+
+            let subtotal = 0;
+            for (let i = 0; i < itemCount; i++) {
+                const item = items[getRandomInt(0, items.length - 1)];
+                const quantity = getRandomInt(1, 5); // Random quantity between 1 and 5
+                const total = item.price * quantity;
+                subtotal += total;
+
+                const row = itemsTable.insertRow(-1);
+                row.innerHTML = `<td>${item.name}</td><td>${quantity}</td><td>Rp ${item.price.toLocaleString()}</td><td>Rp ${total.toLocaleString()}</td>`;
+            }
+
+            // Menampilkan subtotal
+            const subtotalRow = itemsTable.insertRow(-1);
+            subtotalRow.innerHTML = `<td colspan="2"></td><td>Subtotal</td><td>Rp ${subtotal.toLocaleString()}</td>`;
+
+            // Tampilkan struk
+            document.getElementById('receipt').style.display = 'block';
+        };
+
+        document.getElementById('generate-button').addEventListener('click', function() {
+            console.log('Tombol Generate diklik'); // Debug log
+            generateRandomData();
+        });
+
+        console.log('Script dimuat dan siap digunakan.');
     </script>
-
 </body>
 </html>
