@@ -60,7 +60,12 @@
             { name: "Minyak Goreng", price: 22000 },
             { name: "Susu UHT", price: 10000 },
             { name: "Mie Instan", price: 3000 },
-            { name: "Biskuit", price: 15000 }
+            { name: "Biskuit", price: 15000 },
+            { name: "Kopi", price: 10000 },
+            { name: "Teh Botol", price: 5000 },
+            { name: "Coklat", price: 20000 },
+            { name: "Sabun", price: 15000 },
+            { name: "Sikat Gigi", price: 10000 }
         ];
 
         const streets = [
@@ -72,13 +77,19 @@
         ];
 
         const stores = [
-            { 
-                name: "Indomaret", 
-                address: "",  // Ini akan diisi nanti
-                phone: "",    // Ini akan diisi nanti
-                cashiers: ["Budi", "Ani", "Joko", "Siti", "Dewi"] 
-            }
+            "CV. Toko Maju", 
+            "CV. Sumber Berkah", 
+            "CV. Usaha Bersama", 
+            "CV. Sejahtera", 
+            "CV. Mitra Abadi",
+            "CV. Andalan", 
+            "CV. Cemerlang", 
+            "CV. Mandiri", 
+            "CV. Abadi", 
+            "CV. Mega Jaya"
         ];
+
+        const cashiers = ["Budi", "Ani", "Joko", "Siti", "Dewi"];
 
         const getRandomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 
@@ -93,14 +104,15 @@
         };
 
         const generateRandomData = () => {
-            const store = stores[0];
-            store.address = streets[getRandomInt(0, streets.length - 1)] + getRandomInt(100, 999);
-            store.phone = "021-" + getRandomInt(100, 999) + "-" + getRandomInt(1000, 9999);
+            const storeName = stores[getRandomInt(0, stores.length - 1)];
+            const storeAddress = streets[getRandomInt(0, streets.length - 1)] + getRandomInt(100, 999);
+            const storePhone = "021-" + getRandomInt(100, 999) + "-" + getRandomInt(1000, 9999);
+            const cashierName = cashiers[getRandomInt(0, cashiers.length - 1)];
 
-            document.getElementById('store-name').innerText = store.name;
-            document.getElementById('store-address').innerText = store.address;
-            document.getElementById('store-phone').innerText = store.phone;
-            document.getElementById('cashier-name').innerText = store.cashiers[getRandomInt(0, store.cashiers.length - 1)];
+            document.getElementById('store-name').innerText = storeName;
+            document.getElementById('store-address').innerText = storeAddress;
+            document.getElementById('store-phone').innerText = storePhone;
+            document.getElementById('cashier-name').innerText = cashierName;
 
             document.getElementById('transaction-number').innerText = generateRandomTransactionNumber();
             document.getElementById('transaction-date').innerText = new Date().toLocaleString();
@@ -133,11 +145,8 @@
         };
 
         document.getElementById('generate-button').addEventListener('click', function() {
-            console.log('Tombol Generate diklik'); // Debug log
             generateRandomData();
         });
-
-        console.log('Script dimuat dan siap digunakan.');
     </script>
 </body>
 </html>
