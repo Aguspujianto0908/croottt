@@ -65,7 +65,32 @@
             { name: "Teh Botol", price: 5000 },
             { name: "Coklat", price: 20000 },
             { name: "Sabun", price: 15000 },
-            { name: "Sikat Gigi", price: 10000 }
+            { name: "Sikat Gigi", price: 10000 },
+            { name: "Detergen", price: 12000 },
+            { name: "Pasta Gigi", price: 20000 },
+            { name: "Makanan Ringan", price: 8000 },
+            { name: "Keripik", price: 10000 },
+            { name: "Saus Sambal", price: 7500 },
+            { name: "Sereal", price: 25000 },
+            { name: "Minuman Energi", price: 12000 },
+            { name: "Kecap Manis", price: 7000 },
+            { name: "Kardus Pembungkus", price: 3000 },
+            { name: "Susu Kental Manis", price: 12000 },
+            { name: "Cereal Bar", price: 15000 },
+            { name: "Air Mineral", price: 5000 },
+            { name: "Buah Jeruk", price: 10000 },
+            { name: "Bawang Merah", price: 8000 },
+            { name: "Bawang Putih", price: 8000 },
+            { name: "Cabai Merah", price: 15000 },
+            { name: "Sayur Bayam", price: 7000 },
+            { name: "Sayur Sawi", price: 7000 },
+            { name: "Tomat", price: 9000 },
+            { name: "Kentang", price: 12000 },
+            { name: "Beras", price: 12000 },
+            { name: "Garam", price: 3000 },
+            { name: "Kopi Instan", price: 15000 },
+            { name: "Coklat Batang", price: 12000 },
+            { name: "Sosis", price: 20000 }
         ];
 
         const streets = [
@@ -73,7 +98,12 @@
             "Jl. Pahlawan No. ", 
             "Jl. Jend. Sudirman No. ", 
             "Jl. Gatot Subroto No. ", 
-            "Jl. Soekarno-Hatta No. "
+            "Jl. Soekarno-Hatta No. ",
+            "Jl. Cendrawasih No. ",
+            "Jl. Mawar No. ",
+            "Jl. Melati No. ",
+            "Jl. Anggrek No. ",
+            "Jl. Kenanga No. "
         ];
 
         const stores = [
@@ -86,10 +116,37 @@
             "CV. Cemerlang", 
             "CV. Mandiri", 
             "CV. Abadi", 
-            "CV. Mega Jaya"
+            "CV. Mega Jaya",
+            "CV. Harapan Kita",
+            "CV. Bintang Lima",
+            "CV. Sinergi",
+            "CV. Makmur",
+            "CV. Citra",
+            "CV. Dinamika",
+            "CV. Berkat",
+            "CV. Tunas",
+            "CV. Karya",
+            "CV. Inspirasi"
         ];
 
-        const cashiers = ["Budi", "Ani", "Joko", "Siti", "Dewi"];
+        const cashiers = [
+            "Budi", 
+            "Ani", 
+            "Joko", 
+            "Siti", 
+            "Dewi",
+            "Rudi",
+            "Tina",
+            "Yanto",
+            "Wati",
+            "Eko",
+            "Rina",
+            "Sandi",
+            "Diana",
+            "Fauzan",
+            "Ika",
+            "Nina"
+        ];
 
         const getRandomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 
@@ -117,7 +174,7 @@
             document.getElementById('transaction-number').innerText = generateRandomTransactionNumber();
             document.getElementById('transaction-date').innerText = new Date().toLocaleString();
 
-            const itemCount = getRandomInt(3, 5); // Generate between 3 to 5 items
+            const itemCount = getRandomInt(5, 8); // Generate between 5 to 8 items
             const itemsTable = document.getElementById('items-table');
 
             // Clear previous rows except for header
