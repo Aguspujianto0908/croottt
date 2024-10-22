@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Struk Pembayaran Alfamart</title>
+    <style>
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            width: 300px;
+            margin: 0 auto;
+            padding: 10px;
+            border: 1px solid #000;
+            background-color: #fff;
+        }
+        h2, h4 {
+            text-align: center;
+            margin: 0;
+        }
+        .item {
+            display: flex;
+            justify-content: space-between;
+            margin: 5px 0;
+        }
+        .total {
+            font-weight: bold;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        .footer {
+            text-align: center;
+            font-size: 12px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>ALFAMART</h2>
+    <h4>Jl. Contoh No.123</h4>
+    <h4>Telp: (021) 12345678</h4>
+    <hr>
+    <div id="struk">
+        <div class="item"><span>Loading...</span><span>Rp 0</span></div>
+    </div>
+    
+    <button onclick="generateRandomStruk()">Generate Struk</button>
+
+    <script>
+        function generateRandomStruk() {
+            const items = [
+                { name: 'Susu Ultra', price: Math.floor(Math.random() * 20000) + 5000 },
+                { name: 'Mie Instan', price: Math.floor(Math.random() * 15000) + 2000 },
+                { name: 'Biskuit', price: Math.floor(Math.random() * 10000) + 3000 },
+                { name: 'Sabun Mandi', price: Math.floor(Math.random() * 15000) + 4000 },
+                { name: 'Detergent', price: Math.floor(Math.random() * 25000) + 10000 }
+            ];
+
+            const strukDiv = document.getElementById('struk');
+            strukDiv.innerHTML = ''; // Reset struk
+
+            let total = 0;
+            items.forEach(item => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'item';
+                itemDiv.innerHTML = `<span>${item.name}</span><span>Rp ${item.price}</span>`;
+                strukDiv.appendChild(itemDiv);
+                total += item.price;
+            });
+
+            const totalDiv = document.createElement('div');
+            totalDiv.className = 'total';
+            totalDiv.innerHTML = `Total: Rp <span>${total}</span>`;
+            strukDiv.appendChild(totalDiv);
+
+            const footerDiv = document.createElement('div');
+            footerDiv.className = 'footer';
+            footerDiv.innerHTML = 'Terima kasih telah berbelanja!';
+            strukDiv.appendChild(footerDiv);
+        }
+    </script>
+
+</body>
+</html>
