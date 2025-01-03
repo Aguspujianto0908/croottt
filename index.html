@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,6 +13,7 @@
             padding: 20px;
             text-align: center;
         }
+
         .receipt-container {
             border: 1px solid #000;
             border-radius: 5px;
@@ -19,12 +21,15 @@
             margin-top: 20px;
             display: none; /* Awalnya disembunyikan */
         }
+
         table {
             width: 100%;
             margin: 10px 0;
             border-collapse: collapse;
         }
-        th, td {
+
+        th,
+        td {
             padding: 8px;
             text-align: left;
             border: 1px solid #000;
@@ -33,11 +38,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 </head>
+
 <body>
+
     <button id="generate-button">Generate Struk</button>
     <button id="download-button" style="display:none;">Download Struk</button>
-    
+
     <h1>Struk Pembayaran</h1>
+
     <div class="receipt-container" id="receipt">
         <p id="store-name"></p>
         <p id="store-address"></p>
@@ -45,6 +53,7 @@
         <p>Nomor Transaksi: <span id="transaction-number"></span></p>
         <p>Tanggal: <span id="transaction-date"></span></p>
         <p>Kasir: <span id="cashier-name"></span></p>
+
         <table id="items-table">
             <tr>
                 <th>Item</th>
@@ -53,221 +62,201 @@
                 <th>Total</th>
             </tr>
         </table>
+
         <p>Metode Pembayaran: Tunai</p>
         <p>Terima kasih telah berbelanja!</p>
     </div>
 
     <script>
-        const items = [
-    { name: "Indomie Goreng", price: 2500 },
-    { name: "Minyak Goreng", price: 22000 },
-    { name: "Susu UHT", price: 10000 },
-    { name: "Mie Instan", price: 3000 },
-    { name: "Biskuit", price: 15000 },
-    { name: "Kopi", price: 10000 },
-    { name: "Teh Botol", price: 5000 },
-    { name: "Coklat", price: 20000 },
-    { name: "Sabun", price: 15000 },
-    { name: "Sikat Gigi", price: 10000 },
-    { name: "Beras", price: 15000 },
-    { name: "Gula Pasir", price: 12000 },
-    { name: "Teh Celup", price: 8000 },
-    { name: "Kecap", price: 10000 },
-    { name: "Saos", price: 15000 },
-    { name: "Sereal", price: 25000 },
-    { name: "Bubur Instan", price: 5000 },
-    { name: "Kacang", price: 20000 },
-    { name: "Cereal Bar", price: 18000 },
-    { name: "Roti Tawar", price: 12000 },
-    { name: "Pasta", price: 3000 },
-    { name: "Saus Tomat", price: 15000 },
-    { name: "Margarine", price: 12000 },
-    { name: "Kripik", price: 15000 },
-    { name: "Sereal Sarapan", price: 18000 },
-    { name: "Kue Kering", price: 22000 },
-    { name: "Kue Cubir", price: 15000 },
-    { name: "Snack Kacang", price: 10000 },
-    { name: "Minuman Energi", price: 25000 },
-    { name: "Kopi Instan", price: 12000 },
-    { name: "Air Mineral", price: 5000 },
-    { name: "Teh Manis", price: 7000 },
-    { name: "Keripik Singkong", price: 20000 },
-    { name: "Camilan Nasi", price: 10000 },
-    { name: "Bubuk Kopi", price: 25000 },
-    { name: "Coklat Batangan", price: 3000 },
-    { name: "Permen Karet", price: 5000 },
-    { name: "Saus Sambal", price: 10000 },
-    { name: "Bubuk Coklat", price: 15000 },
-    { name: "Roti Isi", price: 20000 },
-    { name: "Bubur Ayam", price: 15000 },
-    { name: "Kacang Hijau", price: 3000 },
-    { name: "Susu Coklat", price: 10000 },
-    { name: "Puding", price: 12000 },
-    { name: "Biskuit Marie", price: 15000 },
-    { name: "Kue Cubir Coklat", price: 18000 },
-    { name: "Es Teh", price: 7000 },
-    { name: "Kue Talam", price: 10000 },
-    { name: "Mie Goreng", price: 2500 },
-    { name: "Keripik Kentang", price: 15000 },
-    { name: "Pasta Gigi", price: 10000 },
-    { name: "Susu Kental Manis", price: 12000 },
-    { name: "Coklat Ceres", price: 8000 },
-    { name: "Bubur Sumsum", price: 15000 },
-    { name: "Kecap Manis", price: 10000 },
-    { name: "Susu Segar", price: 5000 },
-    { name: "Keripik Tempe", price: 20000 },
-    { name: "Roti Kebab", price: 18000 },
-    { name: "Teh Hijau", price: 8000 },
-    { name: "Bubur Daging", price: 15000 },
-    { name: "Minuman Soda", price: 12000 },
-    { name: "Kacang Garuda", price: 15000 },
-    { name: "Roti Bakar", price: 10000 },
-    { name: "Bubur Jagung", price: 5000 },
-    { name: "Mie Rebus", price: 20000 },
-    { name: "Kue Cubir Pandan", price: 12000 },
-    { name: "Es Krim", price: 20000 },
-    { name: "Cendol", price: 7000 },
-    { name: "Roti Gulung", price: 12000 },
-    { name: "Gorengan", price: 5000 },
-    { name: "Sate Ayam", price: 25000 },
-    { name: "Bakso", price: 15000 },
-    { name: "Nasi Goreng", price: 18000 },
-    { name: "Mie Ayam", price: 15000 },
-    { name: "Es Kelapa", price: 10000 },
-    { name: "Popcorn", price: 12000 },
-    { name: "Bubur Kacang Hijau", price: 7000 }
-];
+        const exchangeRate = 15000; // 1 USD = 15,000 IDR (misalnya)
 
+        const formatCurrency = (amount) => {
+            return `$ ${(amount / exchangeRate).toFixed(2)}`;
+        };
+
+        const items = [
+            { name: "Indomie Goreng", price: 2500 },
+            { name: "Minyak Goreng", price: 22000 },
+            { name: "Susu UHT", price: 10000 },
+            { name: "Mie Instan", price: 3000 },
+            { name: "Biskuit", price: 15000 },
+            { name: "Kopi", price: 10000 },
+            { name: "Teh Botol", price: 5000 },
+            { name: "Coklat", price: 20000 },
+            { name: "Sabun", price: 15000 },
+            { name: "Sikat Gigi", price: 10000 },
+            { name: "Beras", price: 15000 },
+            { name: "Gula Pasir", price: 12000 },
+            { name: "Teh Celup", price: 8000 },
+            { name: "Kecap", price: 10000 },
+            { name: "Saos", price: 15000 },
+            { name: "Sereal", price: 25000 },
+            { name: "Bubur Instan", price: 5000 },
+            { name: "Kacang", price: 20000 },
+            { name: "Cereal Bar", price: 18000 },
+            { name: "Roti Tawar", price: 12000 },
+            { name: "Pasta", price: 3000 },
+            { name: "Saus Tomat", price: 15000 },
+            { name: "Margarine", price: 12000 },
+            { name: "Kripik", price: 15000 },
+            { name: "Sereal Sarapan", price: 18000 },
+            { name: "Kue Kering", price: 22000 },
+            { name: "Kue Cubir", price: 15000 },
+            { name: "Snack Kacang", price: 10000 },
+            { name: "Minuman Energi", price: 25000 },
+            { name: "Kopi Instan", price: 12000 },
+            { name: "Air Mineral", price: 5000 },
+            { name: "Teh Manis", price: 7000 },
+            { name: "Keripik Singkong", price: 20000 },
+            { name: "Camilan Nasi", price: 10000 },
+            { name: "Bubuk Kopi", price: 25000 },
+            { name: "Coklat Batangan", price: 3000 },
+            { name: "Permen Karet", price: 5000 },
+            { name: "Saus Sambal", price: 10000 },
+            { name: "Bubuk Coklat", price: 15000 },
+            { name: "Roti Isi", price: 20000 },
+            { name: "Bubur Ayam", price: 15000 },
+            { name: "Kacang Hijau", price: 3000 },
+            { name: "Susu Coklat", price: 10000 },
+            { name: "Puding", price: 12000 },
+            { name: "Biskuit Marie", price: 15000 },
+            { name: "Kue Cubir Coklat", price: 18000 },
+            { name: "Es Teh", price: 7000 },
+            { name: "Kue Talam", price: 10000 },
+            { name: "Mie Goreng", price: 2500 },
+            { name: "Keripik Kentang", price: 15000 },
+            { name: "Pasta Gigi", price: 10000 },
+            { name: "Susu Kental Manis", price: 12000 },
+            { name: "Coklat Ceres", price: 8000 },
+            { name: "Bubur Sumsum", price: 15000 },
+            { name: "Kecap Manis", price: 10000 },
+            { name: "Susu Segar", price: 5000 },
+            { name: "Keripik Tempe", price: 20000 },
+            { name: "Roti Kebab", price: 18000 },
+            { name: "Teh Hijau", price: 8000 },
+            { name: "Bubur Daging", price: 15000 },
+            { name: "Minuman Soda", price: 12000 },
+            { name: "Kacang Garuda", price: 15000 },
+            { name: "Roti Bakar", price: 10000 },
+            { name: "Bubur Jagung", price: 5000 },
+            { name: "Mie Rebus", price: 20000 },
+            { name: "Kue Cubir Pandan", price: 12000 },
+            { name: "Es Krim", price: 20000 },
+            { name: "Cendol", price: 7000 },
+            { name: "Roti Gulung", price: 12000 },
+            { name: "Gorengan", price: 5000 },
+            { name: "Sate Ayam", price: 25000 },
+            { name: "Bakso", price: 15000 },
+            { name: "Nasi Goreng", price: 18000 },
+            { name: "Mie Ayam", price: 15000 },
+            { name: "Es Kelapa", price: 10000 },
+            { name: "Popcorn", price: 12000 },
+            { name: "Bubur Kacang Hijau", price: 7000 }
+        ];
 
         const streets = [
-    "Jl. Merdeka No. ", 
-    "Jl. Pahlawan No. ", 
-    "Jl. Jend. Sudirman No. ", 
-    "Jl. Gatot Subroto No. ", 
-    "Jl. Soekarno-Hatta No. ",
-    "Jl. Cendana No. ",
-    "Jl. Kamboja No. ",
-    "Jl. Anggrek No. ",
-    "Jl. Kenanga No. ",
-    "Jl. Melati No. ",
-    "Jl. Cendrawasih No. ",
-    "Jl. Diponegoro No. ",
-    "Jl. Jati No. ",
-    "Jl. Lili No. ",
-    "Jl. Mawar No. ",
-    "Jl. Palem No. ",
-    "Jl. Pinang No. ",
-    "Jl. Seroja No. ",
-    "Jl. Taman No. ",
-    "Jl. Angsana No. ",
-    "Jl. Melati Selatan No. ",
-    "Jl. Kuning No. ",
-    "Jl. Batu No. ",
-    "Jl. Mutiara No. ",
-    "Jl. Pertiwi No. ",
-    "Jl. Raya Barat No. ",
-    "Jl. Kebon Jeruk No. ",
-    "Jl. Kemuning No. ",
-    "Jl. Palem Raya No. ",
-    "Jl. Serut No. ",
-    "Jl. Merapi No. "
-];
-
+            "Jl. Merdeka No.",
+            "Jl. Pahlawan No.",
+            "Jl. Jend. Sudirman No.",
+            "Jl. Gatot Subroto No.",
+            "Jl. Soekarno-Hatta No.",
+            "Jl. Cendana No.",
+            "Jl. Kamboja No.",
+            "Jl. Anggrek No.",
+            "Jl. Kenanga No.",
+            "Jl. Melati No.",
+            "Jl. Cendrawasih No.",
+            "Jl. Diponegoro No.",
+            "Jl. Jati No.",
+            "Jl. Lili No.",
+            "Jl. Mawar No.",
+            "Jl. Palem No.",
+            "Jl. Pinang No.",
+            "Jl. Seroja No.",
+            "Jl. Taman No.",
+            "Jl. Angsana No.",
+            "Jl. Melati Selatan No.",
+            "Jl. Kuning No.",
+            "Jl. Batu No.",
+            "Jl. Mutiara No.",
+            "Jl. Pertiwi No.",
+            "Jl. Raya Barat No.",
+            "Jl. Kebon Jeruk No.",
+            "Jl. Kemuning No.",
+            "Jl. Palem Raya No.",
+            "Jl. Serut No.",
+            "Jl. Merapi No."
+        ];
 
         const stores = [
-    "CV. Toko Maju", 
-    "CV. Sumber Berkah", 
-    "CV. Usaha Bersama",
-    "CV. Mitra Sejati",
-    "CV. Bintang Jaya",
-    "CV. Sejahtera Abadi",
-    "CV. Berkat Abadi",
-    "CV. Suka Maju",
-    "CV. Harmoni",
-    "CV. Taman Indah",
-    "CV. Mega Jaya",
-    "CV. Citra",
-    "CV. Sentosa",
-    "CV. Karya Mandiri",
-    "CV. Abadi",
-    "CV. Cemerlang",
-    "CV. Tanjung",
-    "CV. Maju Bersama",
-    "CV. Sinar Jaya",
-    "CV. Nusa Indah",
-    "CV. Keluarga Bahagia",
-    "CV. Cita Rasa",
-    "CV. Karya Sejati",
-    "CV. Mandiri Utama",
-    "CV. Multi Usaha",
-    "CV. Prima",
-    "CV. Jaya Abadi",
-    "CV. Terang",
-    "CV. Gemilang",
-    "CV. Mandiri Jaya",
-    "CV. Toko Sejahtera",
-    "CV. Sumber Maju",
-    "CV. Karya Agung",
-    "CV. Tiga Pilar",
-    "CV. Sejahtera Utama",
-    "CV. Mega Berkat"
-];
-
+            "CV. Toko Maju",
+            "CV. Sumber Berkah",
+            "CV. Usaha Bersama",
+            "CV. Mitra Sejati",
+            "CV. Bintang Jaya",
+            "CV. Sejahtera Abadi",
+            "CV. Berkat Abadi",
+            "CV. Suka Maju",
+            "CV. Harmoni",
+            "CV. Taman Indah",
+            "CV. Mega Jaya",
+            "CV. Citra",
+            "CV. Sentosa",
+            "CV. Karya Mandiri",
+            "CV. Abadi",
+            "CV. Cemerlang",
+            "CV. Tanjung",
+            "CV. Maju Bersama",
+            "CV. Sinar Jaya",
+            "CV. Nusa Indah",
+            "CV. Keluarga Bahagia",
+            "CV. Cita Rasa",
+            "CV. Karya Sejati",
+            "CV. Mandiri Utama",
+            "CV. Multi Usaha",
+            "CV. Prima",
+            "CV. Jaya Abadi",
+            "CV. Terang",
+            "CV. Gemilang",
+            "CV. Mandiri Jaya",
+            "CV. Toko Sejahtera",
+            "CV. Sumber Maju",
+            "CV. Karya Agung",
+            "CV. Tiga Pilar",
+            "CV. Sejahtera Utama",
+            "CV. Mega Berkat"
+        ];
 
         const cashiers = [
-    "Budi", 
-    "Ani", 
-    "Joko",
-    "Siti",
-    "Rudi",
-    "Dewi",
-    "Agus",
-    "Lina",
-    "Yudi",
-    "Nina",
-    "Sari",
-    "Toni",
-    "Rina",
-    "Fahmi",
-    "Dani",
-    "Alya",
-    "Maya",
-    "Wahyu",
-    "Hendra",
-    "Rosa",
-    "Rizki",
-    "Eka",
-    "Siti",
-    "Bima",
-    "Dodi",
-    "Gina",
-    "Indra",
-    "Rina",
-    "Fera",
-    "Kiki",
-    "Bela",
-    "Siska",
-    "Rama",
-    "Zulfa",
-    "Miko",
-    "Daniella",
-    "Lian",
-    "Glen",
-    "Dion",
-    "Kurnia"
-];
+            "Budi",
+            "Ani",
+            "Joko",
+            "Siti",
+            "Rudi",
+            "Dewi",
+            "Agus",
+            "Lina",
+            "Yudi",
+            "Nina",
+            "Rina",
+            "Bambang",
+            "Alya",
+            "Erwin",
+            "Dedi",
+            "Ratna",
+            "Zahra",
+            "Nanda",
+            "Ari",
+            "Mila",
+            "Riska",
+            "Vita",
+            "Liza",
+            "Agung"
+        ];
 
         const getRandomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 
-        const generateRandomTransactionNumber = () => {
-            const date = new Date();
-            return date.getFullYear().toString() + 
-                   (date.getMonth() + 1).toString().padStart(2, '0') + 
-                   date.getDate().toString().padStart(2, '0') + 
-                   date.getHours().toString().padStart(2, '0') + 
-                   date.getMinutes().toString().padStart(2, '0') + 
-                   date.getSeconds().toString().padStart(2, '0');
-        };
+        const generateRandomTransactionNumber = () => "TXN" + getRandomInt(1000, 9999);
 
         const generateRandomData = () => {
             const storeName = stores[getRandomInt(0, stores.length - 1)];
@@ -303,8 +292,8 @@
                 const newRow = itemsTable.insertRow(-1);
                 newRow.insertCell(0).innerText = randomItem.name;
                 newRow.insertCell(1).innerText = quantity;
-                newRow.insertCell(2).innerText = `Rp ${randomItem.price.toLocaleString()}`;
-                newRow.insertCell(3).innerText = `Rp ${itemTotal.toLocaleString()}`;
+                newRow.insertCell(2).innerText = formatCurrency(randomItem.price);
+                newRow.insertCell(3).innerText = formatCurrency(itemTotal);
             }
 
             // Tampilkan struk dan tombol download
@@ -316,24 +305,22 @@
             totalRow.insertCell(0).innerText = 'Total Pembayaran';
             totalRow.insertCell(1).innerText = '';
             totalRow.insertCell(2).innerText = '';
-            totalRow.insertCell(3).innerText = `Rp ${totalAmount.toLocaleString()}`;
+            totalRow.insertCell(3).innerText = formatCurrency(totalAmount);
         };
 
-        document.getElementById('generate-button').onclick = generateRandomData;
+        // Button to generate receipt
+        document.getElementById('generate-button').addEventListener('click', generateRandomData);
 
-        document.getElementById('download-button').onclick = () => {
+        // Button to download receipt as image
+        document.getElementById('download-button').addEventListener('click', function () {
             const receipt = document.getElementById('receipt');
-            const storeName = document.getElementById('store-name').innerText;
-            html2canvas(receipt).then(canvas => {
-                canvas.toBlob(function(blob) {
-                    saveAs(blob, `${storeName.replace(/\s/g, '_')}_struk.png`);
+            html2canvas(receipt).then(function (canvas) {
+                canvas.toBlob(function (blob) {
+                    saveAs(blob, "receipt.png");
                 });
-            }).catch(err => console.error(err));
-        };
+            });
+        });
     </script>
-    <script id="hydro_config" type="text/javascript">
-    window.Hydro_tagId = "dc9a317a-7fbf-4484-806d-d1b874b3ad94";
-  </script>
-  <script id="hydro_script" src="https://track.hydro.online/"></script>
 </body>
+
 </html>
