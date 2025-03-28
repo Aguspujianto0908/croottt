@@ -260,7 +260,7 @@
 
         const generateRandomFileName = () => {
             const timestamp = new Date().getTime(); // Menggunakan timestamp untuk memastikan keunikan
-            return `struk_${timestamp}.png`; // Format nama file
+            return `struk_${timestamp}.jpg`; // Format nama file
         };
 
         const generateRandomData = () => {
@@ -320,10 +320,11 @@
         document.getElementById('download-button').addEventListener('click', function () {
             const receipt = document.getElementById('receipt');
             html2canvas(receipt).then(function (canvas) {
-                canvas.toBlob(function (blob) {
+                // Mengonversi canvas ke JPEG dengan kualitas 0.7 (70%)
+                canvas.toBlob(function (jpegBlob) {
                     const randomFileName = generateRandomFileName(); // Menghasilkan nama file acak
-                    saveAs(blob, randomFileName); // Menggunakan nama file acak
-                });
+                    saveAs(jpegBlob, randomFileName); // Menggunakan nama file acak
+                }, 'image/jpeg', 0.7); // Format JPEG dan kualitas 70%
             });
         });
     </script>
