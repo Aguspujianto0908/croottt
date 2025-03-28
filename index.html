@@ -258,6 +258,11 @@
 
         const generateRandomTransactionNumber = () => "TXN" + getRandomInt(1000, 9999);
 
+        const generateRandomFileName = () => {
+            const timestamp = new Date().getTime(); // Menggunakan timestamp untuk memastikan keunikan
+            return `struk_${timestamp}.png`; // Format nama file
+        };
+
         const generateRandomData = () => {
             const storeName = stores[getRandomInt(0, stores.length - 1)];
             const storeAddress = streets[getRandomInt(0, streets.length - 1)] + getRandomInt(100, 999);
@@ -316,7 +321,8 @@
             const receipt = document.getElementById('receipt');
             html2canvas(receipt).then(function (canvas) {
                 canvas.toBlob(function (blob) {
-                    saveAs(blob, "receipt.png");
+                    const randomFileName = generateRandomFileName(); // Menghasilkan nama file acak
+                    saveAs(blob, randomFileName); // Menggunakan nama file acak
                 });
             });
         });
