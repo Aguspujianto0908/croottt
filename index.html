@@ -19,7 +19,9 @@
        const link = document.createElement('a');
        link.href = 'https://placehold.co/50x50'; // Ganti dengan URL gambar yang ingin diunduh
        link.download = 'logo.png'; // Nama file yang akan diunduh
-       link.click();
+       document.body.appendChild(link); // Menambahkan link ke body
+       link.click(); // Mengklik link untuk memulai download
+       document.body.removeChild(link); // Menghapus link setelah klik
    }
 
    window.onload = updateAmounts;
