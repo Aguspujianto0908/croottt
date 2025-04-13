@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Struk Pembayaran</title>
+    <title>Payment Receipt</title>
     <style>
         body {
             font-family: monospace;
-            max-width: 600px; /* Mengubah lebar maksimum */
+            max-width: 600px; /* Set maximum width */
             margin: auto;
             padding: 20px;
             text-align: center;
@@ -19,7 +19,7 @@
             border-radius: 5px;
             padding: 10px;
             margin-top: 20px;
-            display: none; /* Awalnya disembunyikan */
+            display: none; /* Initially hidden */
         }
 
         table {
@@ -41,87 +41,87 @@
 
 <body>
 
-    <button id="generate-button">Generate Struk</button>
-    <button id="download-button" style="display:none;">Download Struk</button>
+    <button id="generate-button">Generate Receipt</button>
+    <button id="download-button" style="display:none;">Download Receipt</button>
 
-    <h1>Struk Pembayaran</h1>
+    <h1>Payment Receipt</h1>
 
     <div class="receipt-container" id="receipt">
         <p id="store-name"></p>
         <p id="store-address"></p>
         <p id="store-phone"></p>
-        <p>Nomor Transaksi: <span id="transaction-number"></span></p>
-        <p>Tanggal: <span id="transaction-date"></span></p>
-        <p>Kasir: <span id="cashier-name"></span></p>
+        <p>Transaction Number: <span id="transaction-number"></span></p>
+        <p>Date: <span id="transaction-date"></span></p>
+        <p>Cashier: <span id="cashier-name"></span></p>
 
         <table id="items-table">
             <tr>
                 <th>Item</th>
-                <th>Jumlah</th>
-                <th>Harga Satuan</th>
+                <th>Quantity</th>
+                <th>Unit Price</th>
                 <th>Total</th>
             </tr>
         </table>
 
-        <p>Metode Pembayaran: Tunai</p>
-        <p>Terima kasih telah berbelanja!</p>
+        <p>Payment Method: Cash</p>
+        <p>Thank you for shopping!</p>
     </div>
 
     <script>
-        const exchangeRate = 15000; // 1 USD = 15,000 IDR (misalnya)
+        const exchangeRate = 15000; // 1 USD = 15,000 IDR (example)
 
         const formatCurrency = (amount) => {
             return `$ ${(amount / exchangeRate).toFixed(2)}`;
         };
 
         const items = [
-            { name: "Indomie Goreng", price: 2500 },
-            { name: "Minyak Goreng", price: 22000 },
-            { name: "Susu UHT", price: 10000 },
-            { name: "Mie Instan", price: 3000 },
-            { name: "Biskuit", price: 15000 },
-            { name: "Kopi", price: 10000 },
-            { name: "Teh Botol", price: 5000 },
-            { name: "Coklat", price: 20000 },
-            { name: "Sabun", price: 15000 },
-            { name: "Sikat Gigi", price: 10000 },
-            { name: "Detergen", price: 30000 },
-            { name: "Pasta Gigi", price: 12000 },
-            { name: "Shampo", price: 25000 },
+            { name: "Instant Noodles", price: 2500 },
+            { name: "Cooking Oil", price: 22000 },
+            { name: "UHT Milk", price: 10000 },
+            { name: "Instant Noodles (Pack)", price: 3000 },
+            { name: "Biscuits", price: 15000 },
+            { name: "Coffee", price: 10000 },
+            { name: "Bottled Tea", price: 5000 },
+            { name: "Chocolate", price: 20000 },
+            { name: "Soap", price: 15000 },
+            { name: "Toothbrush", price: 10000 },
+            { name: "Detergent", price: 30000 },
+            { name: "Toothpaste", price: 12000 },
+            { name: "Shampoo", price: 25000 },
             { name: "Conditioner", price: 25000 },
             { name: "Tissue", price: 8000 },
-            { name: "Kecap", price: 15000 },
-            { name: "Saos", price: 12000 },
-            { name: "Bubur Ayam", price: 20000 },
-            { name: "Roti Tawar", price: 10000 },
-            { name: "Sereal", price: 30000 },
-            { name: "Buah Apel", price: 15000 }
+            { name: "Soy Sauce", price: 15000 },
+            { name: "Chili Sauce", price: 12000 },
+            { name: "Chicken Porridge", price: 20000 },
+            { name: "White Bread", price: 10000 },
+            { name: "Cereal", price: 30000 },
+            { name: "Apples", price: 15000 }
         ];
 
         const streets = [
-            "Jl. Merdeka No.",
-            "Jl. Pahlawan No.",
-            "Jl. Jend. Sudirman No.",
-            "Jl. Gatot Subroto No.",
-            "Jl. Soekarno-Hatta No.",
-            "Jl. Diponegoro No.",
-            "Jl. Ahmad Yani No.",
-            "Jl. Raya No.",
-            "Jl. Kebon Jeruk No.",
-            "Jl. Cendana No."
+            "Main St. No.",
+            "Hero St. No.",
+            "Sudirman St. No.",
+            "Gatot Subroto St. No.",
+            "Soekarno-Hatta St. No.",
+            "Diponegoro St. No.",
+            "Ahmad Yani St. No.",
+            "Raya St. No.",
+            "Kebon Jer uk St. No.",
+            "Cendana St. No."
         ];
 
         const stores = [
-            "CV. Toko Maju",
-            "CV. Sumber Berkah",
-            "CV. Usaha Bersama",
-            "CV. Mitra Sejati",
-            "CV. Bintang Jaya",
-            "CV. Sejahtera Abadi",
-            "CV. Harapan Kita",
-            "CV. Sukses Selalu",
+            "CV. Maju Store",
+            "CV. Berkah Source",
+            "CV. United Business",
+            "CV. True Partner",
+            "CV. Star Jaya",
+            "CV. Prosperity Abadi",
+            "CV. Hopeful",
+            "CV. Always Successful",
             "CV. Citra Mandiri",
-            "CV. Karya Utama"
+            "CV. Main Work"
         ];
 
         const cashiers = [
@@ -142,8 +142,8 @@
         const generateRandomTransactionNumber = () => "TXN" + getRandomInt(1000, 9999);
 
         const generateRandomFileName = () => {
-            const timestamp = new Date().getTime(); // Menggunakan timestamp untuk memastikan keunikan
-            return `struk_${timestamp}.jpg`; // Format nama file
+            const timestamp = new Date().getTime(); // Using timestamp for uniqueness
+            return `receipt_${timestamp}.jpg`; // File name format
         };
 
         const generateRandomData = () => {
@@ -184,13 +184,13 @@
                 newRow.insertCell(3).innerText = formatCurrency(itemTotal);
             }
 
-            // Tampilkan struk dan tombol download
+            // Show receipt and download button
             document.querySelector('.receipt-container').style.display = 'block';
             document.getElementById('download-button').style.display = 'inline';
 
-            // Total Pembayaran
+            // Total Payment
             const totalRow = itemsTable.insertRow(-1);
-            totalRow.insertCell(0).innerText = 'Total Pembayaran';
+            totalRow.insertCell(0).innerText = 'Total Payment';
             totalRow.insertCell(1).innerText = '';
             totalRow.insertCell(2).innerText = '';
             totalRow.insertCell(3).innerText = formatCurrency(totalAmount);
@@ -202,11 +202,11 @@
         // Button to download receipt as image
         document.getElementById('download-button').addEventListener('click', function () {
             const receipt = document.getElementById('receipt');
-            html2canvas(receipt, { scale: 1 }).then(function (canvas) {
+            html2canvas(receipt, { scale: 2 }).then(function (canvas) { // Increased scale for better resolution
                 canvas.toBlob(function (jpegBlob) {
-                    const randomFileName = generateRandomFileName(); // Menghasilkan nama file acak
-                    saveAs(jpegBlob, randomFileName); // Menggunakan nama file acak
-                }, 'image/jpeg', 0.3); // Format JPEG dan kualitas 30%
+                    const randomFileName = generateRandomFileName(); // Generate random file name
+                    saveAs(jpegBlob, randomFileName); // Use random file name
+                }, 'image/jpeg', 0.3); // JPEG format and 30% quality
             });
         });
     </script>
