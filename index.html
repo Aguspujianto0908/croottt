@@ -8,7 +8,7 @@
     <style>
         body {
             font-family: monospace;
-            max-width: 400px;
+            max-width: 600px; /* Mengubah lebar maksimum */
             margin: auto;
             padding: 20px;
             text-align: center;
@@ -84,7 +84,18 @@
             { name: "Teh Botol", price: 5000 },
             { name: "Coklat", price: 20000 },
             { name: "Sabun", price: 15000 },
-            { name: "Sikat Gigi", price: 10000 }
+            { name: "Sikat Gigi", price: 10000 },
+            { name: "Detergen", price: 30000 },
+            { name: "Pasta Gigi", price: 12000 },
+            { name: "Shampo", price: 25000 },
+            { name: "Conditioner", price: 25000 },
+            { name: "Tissue", price: 8000 },
+            { name: "Kecap", price: 15000 },
+            { name: "Saos", price: 12000 },
+            { name: "Bubur Ayam", price: 20000 },
+            { name: "Roti Tawar", price: 10000 },
+            { name: "Sereal", price: 30000 },
+            { name: "Buah Apel", price: 15000 }
         ];
 
         const streets = [
@@ -92,7 +103,12 @@
             "Jl. Pahlawan No.",
             "Jl. Jend. Sudirman No.",
             "Jl. Gatot Subroto No.",
-            "Jl. Soekarno-Hatta No."
+            "Jl. Soekarno-Hatta No.",
+            "Jl. Diponegoro No.",
+            "Jl. Ahmad Yani No.",
+            "Jl. Raya No.",
+            "Jl. Kebon Jeruk No.",
+            "Jl. Cendana No."
         ];
 
         const stores = [
@@ -100,7 +116,12 @@
             "CV. Sumber Berkah",
             "CV. Usaha Bersama",
             "CV. Mitra Sejati",
-            "CV. Bintang Jaya"
+            "CV. Bintang Jaya",
+            "CV. Sejahtera Abadi",
+            "CV. Harapan Kita",
+            "CV. Sukses Selalu",
+            "CV. Citra Mandiri",
+            "CV. Karya Utama"
         ];
 
         const cashiers = [
@@ -108,7 +129,12 @@
             "Ani",
             "Joko",
             "Siti",
-            "Rudi"
+            "Rudi",
+            "Dewi",
+            "Andi",
+            "Tina",
+            "Fajar",
+            "Lina"
         ];
 
         const getRandomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
@@ -135,7 +161,7 @@
             document.getElementById('transaction-number').innerText = transactionNumber;
             document.getElementById('transaction-date').innerText = new Date().toLocaleString();
 
-            const itemCount = getRandomInt(2, 3); // Generate between 2 to 3 items
+            const itemCount = getRandomInt(3, 5); // Generate between 3 to 5 items
             const itemsTable = document.getElementById('items-table');
 
             // Clear previous rows except for header
@@ -176,8 +202,7 @@
         // Button to download receipt as image
         document.getElementById('download-button').addEventListener('click', function () {
             const receipt = document.getElementById('receipt');
-            html2canvas(receipt, { scale: 0.5 }).then(function (canvas) {
-                // Mengonversi canvas ke JPEG dengan kualitas 0.3 (30%)
+            html2canvas(receipt, { scale: 1 }).then(function (canvas) {
                 canvas.toBlob(function (jpegBlob) {
                     const randomFileName = generateRandomFileName(); // Menghasilkan nama file acak
                     saveAs(jpegBlob, randomFileName); // Menggunakan nama file acak
