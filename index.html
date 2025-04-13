@@ -1,54 +1,55 @@
 <html>
- <head>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
-  <script>
-   function getRandomBTC() {
-       return (Math.random() * 0.01).toFixed(8);
-   }
+<head>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+    <script>
+        function getRandomBTC() {
+            return (Math.random() * 0.01).toFixed(8);
+        }
 
-   function updateAmounts() {
-       const receivedAmount = getRandomBTC();
-       const cashbackAmount = (receivedAmount * 0.005).toFixed(8); // Contoh perhitungan cashback
+        function updateAmounts() {
+            const receivedAmount = getRandomBTC();
+            const cashbackAmount = (receivedAmount * 0.005).toFixed(8); // Contoh perhitungan cashback
 
-       document.getElementById('received-amount').innerText = `BTC ${receivedAmount}`;
-       document.getElementById('cashback-amount').innerText = `+ BTC ${cashbackAmount}`;
-   }
+            document.getElementById('received-amount').innerText = `BTC ${receivedAmount}`;
+            document.getElementById('cashback-amount').innerText = `+ BTC ${cashbackAmount}`;
+        }
 
-   function downloadImage() {
-       const link = document.createElement('a');
-       link.href = 'https://placehold.co/50x50'; // Ganti dengan URL gambar yang ingin diunduh
-       link.download = 'logo.png'; // Nama file yang akan diunduh
-       document.body.appendChild(link); // Menambahkan link ke body
-       link.click(); // Mengklik link untuk memulai download
-       document.body.removeChild(link); // Menghapus link setelah klik
-   }
+        function downloadReceipt() {
+            html2canvas(document.getElementById('receipt')).then(function(canvas) {
+                const link = document.createElement('a');
+                link.href = canvas.toDataURL('image/png');
+                link.download = 'bukti_transaksi.png'; // Nama file yang akan diunduh
+                link.click();
+            });
+        }
 
-   window.onload = updateAmounts;
-  </script>
- </head>
- <body class="bg-white flex items-center justify-center min-h-screen">
-  <div class="bg-white rounded-3xl shadow-lg p-8 text-center max-w-sm w-full">
-   <img alt="Logo Nexo" class="mx-auto mb-4" src="https://placehold.co/50x50"/>
-   <div class="text-center mb-6">
-    <div class="w-16 h-16 mx-auto mb-4 flex items-center justify-center border-4 border-green-500 rounded-full">
-     <i class="fas fa-check text-green-500 text-3xl"></i>
+        window.onload = updateAmounts;
+    </script>
+</head>
+<body class="bg-white flex items-center justify-center min-h-screen">
+    <div class="bg-white rounded-3xl shadow-lg p-8 text-center max-w-sm w-full" id="receipt">
+        <img alt="Logo Nexo" class="mx-auto mb-4" src="https://placehold.co/50x50"/>
+        <div class="text-center mb-6">
+            <div class="w-16 h-16 mx-auto mb-4 flex items-center justify-center border-4 border-green-500 rounded-full">
+                <i class="fas fa-check text-green-500 text-3xl"></i>
+            </div>
+            <p class="text-gray-600">Berhasil diterima</p>
+            <p class="text-green-500 text-2xl font-semibold" id="received-amount">BTC 0.00000000</p>
+            <p class="text-gray-400 mt-2">Cashback <span class="text-green-500" id="cashback-amount">+ BTC 0.00000000</span></p>
+        </div>
+        <div class="flex flex-col space-y-4">
+            <button onclick="updateAmounts()" class="bg-blue-600 text-white py-3 px-6 rounded-full w-full text-lg font-semibold">
+                Hasilkan Pembayaran
+            </button>
+            <button onclick="downloadReceipt()" class="bg-green-600 text-white py-3 px-6 rounded-full w-full text-lg font-semibold">
+                Download Bukti Transaksi
+            </button>
+        </div>
+        <button class="bg-blue-600 text-white py-3 px-6 rounded-full w-full text-lg font-semibold mt-4">
+            Ke Dashboard
+        </button>
     </div>
-    <p class="text-gray-600">Berhasil diterima</p>
-    <p class="text-green-500 text-2xl font-semibold" id="received-amount">BTC 0.00000000</p>
-    <p class="text-gray-400 mt-2">Cashback <span class="text-green-500" id="cashback-amount">+ BTC 0.00000000</span></p>
-   </div>
-   <div class="flex flex-col space-y-4">
-       <button onclick="updateAmounts()" class="bg-blue-600 text-white py-3 px-6 rounded-full w-full text-lg font-semibold">
-           Hasilkan Pembayaran
-       </button>
-       <button onclick="downloadImage()" class="bg-green-600 text-white py-3 px-6 rounded-full w-full text-lg font-semibold">
-           Download Gambar
-       </button>
-   </div>
-   <button class="bg-blue-600 text-white py-3 px-6 rounded-full w-full text-lg font-semibold mt-4">
-       Ke Dashboard
-   </button>
-  </div>
- </body>
+</body>
 </html>
