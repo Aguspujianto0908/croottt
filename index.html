@@ -1,215 +1,40 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
+ <head>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <script>
+   function getRandomBTC() {
+       return (Math.random() * 0.01).toFixed(8);
+   }
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Payment Receipt</title>
-    <style>
-        body {
-            font-family: monospace;
-            max-width: 600px; /* Set maximum width */
-            margin: auto;
-            padding: 20px;
-            text-align: center;
-        }
+   function updateAmounts() {
+       const receivedAmount = getRandomBTC();
+       const cashbackAmount = (receivedAmount * 0.005).toFixed(8); // Contoh perhitungan cashback
 
-        .receipt-container {
-            border: 1px solid #000;
-            border-radius: 5px;
-            padding: 10px;
-            margin-top: 20px;
-            display: none; /* Initially hidden */
-        }
+       document.getElementById('received-amount').innerText = `BTC ${receivedAmount}`;
+       document.getElementById('cashback-amount').innerText = `+ BTC ${cashbackAmount}`;
+   }
 
-        table {
-            width: 100%;
-            margin: 10px 0;
-            border-collapse: collapse;
-        }
-
-        th,
-        td {
-            padding: 8px;
-            text-align: left;
-            border: 1px solid #000;
-        }
-    </style>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
-</head>
-
-<body>
-
-    <button id="generate-button">Generate Receipt</button>
-    <button id="download-button" style="display:none;">Download Receipt</button>
-
-    <h1>Payment Receipt</h1>
-
-    <div class="receipt-container" id="receipt">
-        <p id="store-name"></p>
-        <p id="store-address"></p>
-        <p id="store-phone"></p>
-        <p>Transaction Number: <span id="transaction-number"></span></p>
-        <p>Date: <span id="transaction-date"></span></p>
-        <p>Cashier: <span id="cashier-name"></span></p>
-
-        <table id="items-table">
-            <tr>
-                <th>Item</th>
-                <th>Quantity</th>
-                <th>Unit Price</th>
-                <th>Total</th>
-            </tr>
-        </table>
-
-        <p>Payment Method: Cash</p>
-        <p>Thank you for shopping!</p>
+   window.onload = updateAmounts;
+  </script>
+ </head>
+ <body class="bg-white flex items-center justify-center min-h-screen">
+  <div class="bg-white rounded-3xl shadow-lg p-8 text-center max-w-sm w-full">
+   <img alt="Logo Nexo" class="mx-auto mb-4" src="https://placehold.co/50x50"/>
+   <div class="text-center mb-6">
+    <div class="w-16 h-16 mx-auto mb-4 flex items-center justify-center border-4 border-green-500 rounded-full">
+     <i class="fas fa-check text-green-500 text-3xl"></i>
     </div>
-
-    <script>
-        const exchangeRate = 15000; // 1 USD = 15,000 IDR (example)
-
-        const formatCurrency = (amount) => {
-            return `$ ${(amount / exchangeRate).toFixed(2)}`;
-        };
-
-        const items = [
-            { name: "Instant Noodles", price: 2500 },
-            { name: "Cooking Oil", price: 22000 },
-            { name: "UHT Milk", price: 10000 },
-            { name: "Instant Noodles (Pack)", price: 3000 },
-            { name: "Biscuits", price: 15000 },
-            { name: "Coffee", price: 10000 },
-            { name: "Bottled Tea", price: 5000 },
-            { name: "Chocolate", price: 20000 },
-            { name: "Soap", price: 15000 },
-            { name: "Toothbrush", price: 10000 },
-            { name: "Detergent", price: 30000 },
-            { name: "Toothpaste", price: 12000 },
-            { name: "Shampoo", price: 25000 },
-            { name: "Conditioner", price: 25000 },
-            { name: "Tissue", price: 8000 },
-            { name: "Soy Sauce", price: 15000 },
-            { name: "Chili Sauce", price: 12000 },
-            { name: "Chicken Porridge", price: 20000 },
-            { name: "White Bread", price: 10000 },
-            { name: "Cereal", price: 30000 },
-            { name: "Apples", price: 15000 }
-        ];
-
-        const streets = [
-            "Main St. No.",
-            "Hero St. No.",
-            "Sudirman St. No.",
-            "Gatot Subroto St. No.",
-            "Soekarno-Hatta St. No.",
-            "Diponegoro St. No.",
-            "Ahmad Yani St. No.",
-            "Raya St. No.",
-            "Kebon Jer uk St. No.",
-            "Cendana St. No."
-        ];
-
-        const stores = [
-            "CV. Maju Store",
-            "CV. Berkah Source",
-            "CV. United Business",
-            "CV. True Partner",
-            "CV. Star Jaya",
-            "CV. Prosperity Abadi",
-            "CV. Hopeful",
-            "CV. Always Successful",
-            "CV. Citra Mandiri",
-            "CV. Main Work"
-        ];
-
-        const cashiers = [
-            "Budi",
-            "Ani",
-            "Joko",
-            "Siti",
-            "Rudi",
-            "Dewi",
-            "Andi",
-            "Tina",
-            "Fajar",
-            "Lina"
-        ];
-
-        const getRandomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
-
-        const generateRandomTransactionNumber = () => "TXN" + getRandomInt(1000, 9999);
-
-        const generateRandomFileName = () => {
-            const timestamp = new Date().getTime(); // Using timestamp for uniqueness
-            return `receipt_${timestamp}.jpg`; // File name format
-        };
-
-        const generateRandomData = () => {
-            const storeName = stores[getRandomInt(0, stores.length - 1)];
-            const storeAddress = streets[getRandomInt(0, streets.length - 1)] + getRandomInt(100, 999);
-            const storePhone = "021-" + getRandomInt(100, 999) + "-" + getRandomInt(1000, 9999);
-            const cashierName = cashiers[getRandomInt(0, cashiers.length - 1)];
-
-            document.getElementById('store-name').innerText = storeName;
-            document.getElementById('store-address').innerText = storeAddress;
-            document.getElementById('store-phone').innerText = storePhone;
-            document.getElementById('cashier-name').innerText = cashierName;
-
-            const transactionNumber = generateRandomTransactionNumber();
-            document.getElementById('transaction-number').innerText = transactionNumber;
-            document.getElementById('transaction-date').innerText = new Date().toLocaleString();
-
-            const itemCount = getRandomInt(3, 5); // Generate between 3 to 5 items
-            const itemsTable = document.getElementById('items-table');
-
-            // Clear previous rows except for header
-            while (itemsTable.rows.length > 1) {
-                itemsTable.deleteRow(1);
-            }
-
-            let totalAmount = 0;
-
-            for (let i = 0; i < itemCount; i++) {
-                const randomItem = items[getRandomInt(0, items.length - 1)];
-                const quantity = getRandomInt(1, 3); // Quantity between 1 and 2
-                const itemTotal = randomItem.price * quantity;
-                totalAmount += itemTotal;
-
-                const newRow = itemsTable.insertRow(-1);
-                newRow.insertCell(0).innerText = randomItem.name;
-                newRow.insertCell(1).innerText = quantity;
-                newRow.insertCell(2).innerText = formatCurrency(randomItem.price);
-                newRow.insertCell(3).innerText = formatCurrency(itemTotal);
-            }
-
-            // Show receipt and download button
-            document.querySelector('.receipt-container').style.display = 'block';
-            document.getElementById('download-button').style.display = 'inline';
-
-            // Total Payment
-            const totalRow = itemsTable.insertRow(-1);
-            totalRow.insertCell(0).innerText = 'Total Payment';
-            totalRow.insertCell(1).innerText = '';
-            totalRow.insertCell(2).innerText = '';
-            totalRow.insertCell(3).innerText = formatCurrency(totalAmount);
-        };
-
-        // Button to generate receipt
-        document.getElementById('generate-button').addEventListener('click', generateRandomData);
-
-        // Button to download receipt as image
-        document.getElementById('download-button').addEventListener('click', function () {
-            const receipt = document.getElementById('receipt');
-            html2canvas(receipt, { scale: 2 }).then(function (canvas) { // Increased scale for better resolution
-                canvas.toBlob(function (jpegBlob) {
-                    const randomFileName = generateRandomFileName(); // Generate random file name
-                    saveAs(jpegBlob, randomFileName); // Use random file name
-                }, 'image/jpeg', 0.3); // JPEG format and 30% quality
-            });
-        });
-    </script>
-</body>
-
+    <p class="text-gray-600">Berhasil diterima</p>
+    <p class="text-green-500 text-2xl font-semibold" id="received-amount">BTC 0.00000000</p>
+    <p class="text-gray-400 mt-2">Cashback <span class="text-green-500" id="cashback-amount">+ BTC 0.00000000</span></p>
+   </div>
+   <button onclick="updateAmounts()" class="bg-blue-600 text-white py-3 px-6 rounded-full w-full text-lg font-semibold mb-4">
+    Hasilkan Pembayaran
+   </button>
+   <button class="bg-blue-600 text-white py-3 px-6 rounded-full w-full text-lg font-semibold">
+    Ke Dashboard
+   </button>
+  </div>
+ </body>
 </html>
