@@ -15,15 +15,10 @@
        document.getElementById('cashback-amount').innerText = `+ BTC ${cashbackAmount}`;
    }
 
-   function downloadResult() {
-       const receivedAmount = document.getElementById('received-amount').innerText;
-       const cashbackAmount = document.getElementById('cashback-amount').innerText;
-
-       const resultText = `Jumlah Diterima: ${receivedAmount}\nCashback: ${cashbackAmount}`;
-       const blob = new Blob([resultText], { type: 'text/plain' });
+   function downloadImage() {
        const link = document.createElement('a');
-       link.href = URL.createObjectURL(blob);
-       link.download = 'hasil_pembayaran.txt';
+       link.href = 'https://placehold.co/50x50'; // Ganti dengan URL gambar yang ingin diunduh
+       link.download = 'logo.png'; // Nama file yang akan diunduh
        link.click();
    }
 
@@ -45,8 +40,8 @@
        <button onclick="updateAmounts()" class="bg-blue-600 text-white py-3 px-6 rounded-full w-full text-lg font-semibold">
            Hasilkan Pembayaran
        </button>
-       <button onclick="downloadResult()" class="bg-green-600 text-white py-3 px-6 rounded-full w-full text-lg font-semibold">
-           Download Hasil
+       <button onclick="downloadImage()" class="bg-green-600 text-white py-3 px-6 rounded-full w-full text-lg font-semibold">
+           Download Gambar
        </button>
    </div>
    <button class="bg-blue-600 text-white py-3 px-6 rounded-full w-full text-lg font-semibold mt-4">
